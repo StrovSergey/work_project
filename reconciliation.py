@@ -18,8 +18,8 @@ if token_len < 30 or token_len > 30:
   print('Введите любое значение для выхода')
   ext = input()
   sys.exit()
-  date_user = input('Укажите дату выгрузки в формате yyyy-mm-dd \n')
 
+date_user = input('Укажите дату выгрузки в формате yyyy-mm-dd \n')
 try:
   date_user = datetime.strptime(date_user+'T00:00', "%Y-%m-%dT%H:%M")
   date_UTC = (date_user-timedelta(hours=3)).strftime('%Y-%m-%d')
