@@ -11,13 +11,16 @@ from datetime import datetime, timedelta
 print(sys.getrecursionlimit()) 
 print('Введите токен авторизации.')
 
-token = input()
-token_len = len(str(token))
-if token_len < 30 or token_len > 30:
-  print('Введен не корректный токен авторизации')
+def exit(text):
+  print(text)
   print('Введите любое значение для выхода')
   ext = input()
   sys.exit()
+
+token = input()
+token_len = len(str(token))
+if token_len < 30 or token_len > 30:
+  exit('Введен не корректный токен авторизации')
 
 date_user = input('Укажите дату выгрузки в формате yyyy-mm-dd \n')
 try:
