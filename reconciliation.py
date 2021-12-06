@@ -7,6 +7,7 @@ import pandas as pd
 import sys
 from datetime import datetime
 from datetime import datetime, timedelta
+print(sys.getrecursionlimit()) 
 print('Введите токен авторизации.')
 token = input()
 token_len = len(str(token))
@@ -68,6 +69,8 @@ array_remote_id2 = [0] * d
 array_remote_id3 = [0] * d
 array_remote_id4 = [0] * d
 array_remote_id5 = [0] * d
+array_cs8 = [0] * d
+array_cs9 = [0] * d
 i = 0
 while i < d :  
     id = json_response_id_acc["transactions"][i]["id"]
@@ -91,7 +94,13 @@ while i < d :
     array_remote_id4[i] = remote_id4
     remote_id5 = json_response_id_acc["transactions"][i]["remote_id5"]
     array_remote_id5[i] = remote_id5
-    url_psp = "https://api.psp.io/payment-gateway/v3/merchant_accounts?limit_to=25&filter_by=id%3D"+str(account_id)
+    cs8 = json_response_id_acc["transactions"][i]["cs8"]
+    array_cs8[i] = cs8
+    cs9 = json_response_id_acc["transactions"][i]["cs9"]
+    array_cs9[i] = cs9
+
+    
+    url_psp = "https://api.psp.io/payment-gateway/v3/merchant_accounts?limit_to=1&filter_by=id%3D"+str(account_id)
     response_terminal = requests.request("GET", url_psp, headers=headers)
     json_response_terminal = json.loads(response_terminal.text)
     terminal_id = json_response_terminal['merchant_accounts'][0]['provider_terminal']['credentials']['terminal_id']
@@ -112,8 +121,8 @@ while i < d :
       array_RC_DESC[i] = rc_desc
       rc = json_response_open['VALUES'][0]['RC']
       array_RC[i] = rc
+    time.sleep(1)
     i =  i + 1
-    time.sleep(0.2)
 tablet_exel = pd.DataFrame(  {  
 'ID транзакции':          array_id , 
 'Дата создания':          array_created,
@@ -123,12 +132,15 @@ tablet_exel = pd.DataFrame(  {
 'RC':                     array_RC ,
 'RC_DESC':                array_RC_DESC ,
 'Транзакция не найдена':  array_no_found ,
-'remote_id':              remote_id,
-'remote_id_ext':          remote_id_ext,
-'remote_id2':             remote_id2,
-'remote_id3':             remote_id3,
-'remote_id4':             remote_id4,
-'remote_id5':             remote_id5,
+'remote_id':              array_remote_id,
+'remote_id_ext':          array_remote_id_ext,
+'remote_id2':             array_remote_id2,
+'remote_id3':             array_remote_id3,
+'remote_id4':             array_remote_id4,
+'remote_id5':             array_remote_id5,
+'cs8':                    array_cs8,
+'cs9':                    array_cs9
+
    }   )
 print('*******************************************************************\n'+str(tablet_exel))
 try:
